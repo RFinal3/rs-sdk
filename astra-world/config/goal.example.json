@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "goal_id": "2026-11-05-woodcutting-a",
+  "kind": "skill_loop",
+  "area": "lumbridge",
+  "focus": ["Woodcutting", "Firemaking"],
+  "target": { "levels": { "Woodcutting": 15 } },
+  "until": ["target_reached", "session_end"],
+  "plan": "Chop normal trees near the castle. When the inventory is full, burn the logs, then carry on.",
+  "avoid": ["trees another player is already chopping"],
+  "notes_for_harness": "Prefer the closest reachable tree."
+}

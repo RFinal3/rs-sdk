@@ -1,0 +1,1863 @@
+{
+ "tick": 57,
+ "combatTargetTelemetryVersion": 1,
+ "revision": 57,
+ "player": {
+  "name": "Probe1",
+  "combatLevel": 3,
+  "hp": 10,
+  "maxHp": 10,
+  "x": 6976,
+  "z": 6464,
+  "worldX": 3094,
+  "worldZ": 3106,
+  "level": 0,
+  "runEnergy": 100,
+  "runWeight": 0,
+  "animId": -1,
+  "spotanimId": -1,
+  "combat": {
+   "inCombat": false,
+   "targetIndex": -1,
+   "targetType": "none",
+   "lastDamageTick": -1
+  },
+  "isDead": false,
+  "lifeId": 1,
+  "respawnCount": 0,
+  "lastDeathTick": null
+ },
+ "skills": [
+  {
+   "name": "Attack",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Defence",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Strength",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Hitpoints",
+   "level": 10,
+   "baseLevel": 10,
+   "experience": 980
+  },
+  {
+   "name": "Ranged",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Prayer",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Magic",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Cooking",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Woodcutting",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Fletching",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Fishing",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Firemaking",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Crafting",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Smithing",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Mining",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Herblore",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Agility",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Thieving",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Stat18",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Stat19",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  },
+  {
+   "name": "Runecraft",
+   "level": 1,
+   "baseLevel": 1,
+   "experience": 0
+  }
+ ],
+ "inventory": [],
+ "equipment": [],
+ "combatStyle": {
+  "currentStyle": 0,
+  "weaponName": "Unarmed",
+  "styles": [],
+  "tabInterfaceId": -1,
+  "known": false
+ },
+ "nearbyNpcs": [
+  {
+   "kind": "npc",
+   "id": 945,
+   "index": 4266,
+   "name": "RuneScape Guide",
+   "combatLevel": 0,
+   "x": 3095,
+   "z": 3106,
+   "tileX": 3095,
+   "tileZ": 3106,
+   "size": 1,
+   "distance": 1,
+   "hp": null,
+   "maxHp": null,
+   "healthPercent": null,
+   "targetIndex": -1,
+   "inCombat": false,
+   "lastCombatTick": null,
+   "animId": -1,
+   "spotanimId": -1,
+   "optionsWithIndex": [
+    {
+     "text": "Talk-to",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Talk-to"
+   ],
+   "reachable": true
+  },
+  {
+   "kind": "npc",
+   "id": 943,
+   "index": 4271,
+   "name": "Survival Expert",
+   "combatLevel": 0,
+   "x": 3104,
+   "z": 3095,
+   "tileX": 3104,
+   "tileZ": 3095,
+   "size": 1,
+   "distance": 11,
+   "hp": null,
+   "maxHp": null,
+   "healthPercent": null,
+   "targetIndex": -1,
+   "inCombat": false,
+   "lastCombatTick": null,
+   "animId": -1,
+   "spotanimId": -1,
+   "optionsWithIndex": [
+    {
+     "text": "Talk-to",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Talk-to"
+   ],
+   "reachable": false
+  },
+  {
+   "kind": "npc",
+   "id": 952,
+   "index": 4269,
+   "name": "Fishing spot",
+   "combatLevel": 0,
+   "x": 3101,
+   "z": 3092,
+   "tileX": 3101,
+   "tileZ": 3092,
+   "size": 1,
+   "distance": 14,
+   "hp": null,
+   "maxHp": null,
+   "healthPercent": null,
+   "targetIndex": -1,
+   "inCombat": false,
+   "lastCombatTick": null,
+   "animId": -1,
+   "spotanimId": -1,
+   "optionsWithIndex": [
+    {
+     "text": "Net",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Net"
+   ],
+   "reachable": false
+  },
+  {
+   "kind": "npc",
+   "id": 952,
+   "index": 4270,
+   "name": "Fishing spot",
+   "combatLevel": 0,
+   "x": 3103,
+   "z": 3092,
+   "tileX": 3103,
+   "tileZ": 3092,
+   "size": 1,
+   "distance": 14,
+   "hp": null,
+   "maxHp": null,
+   "healthPercent": null,
+   "targetIndex": -1,
+   "inCombat": false,
+   "lastCombatTick": null,
+   "animId": -1,
+   "spotanimId": -1,
+   "optionsWithIndex": [
+    {
+     "text": "Net",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Net"
+   ],
+   "reachable": false
+  }
+ ],
+ "nearbyPlayers": [],
+ "nearbyLocs": [
+  {
+   "id": 350,
+   "name": "Drawers",
+   "x": 3095,
+   "z": 3104,
+   "level": 0,
+   "distance": 2,
+   "optionsWithIndex": [
+    {
+     "text": "Open",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Open"
+   ],
+   "reachable": true
+  },
+  {
+   "id": 1196,
+   "name": "Flowers",
+   "x": 3096,
+   "z": 3104,
+   "level": 0,
+   "distance": 2,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1158,
+   "name": "Potted plant",
+   "x": 3097,
+   "z": 3106,
+   "level": 0,
+   "distance": 3,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 1158,
+   "name": "Potted plant",
+   "x": 3097,
+   "z": 3109,
+   "level": 0,
+   "distance": 3,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 1158,
+   "name": "Potted plant",
+   "x": 3090,
+   "z": 3108,
+   "level": 0,
+   "distance": 4,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 873,
+   "name": "Sink",
+   "x": 3090,
+   "z": 3109,
+   "level": 0,
+   "distance": 4,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 887,
+   "name": "Portrait",
+   "x": 3091,
+   "z": 3102,
+   "level": 0,
+   "distance": 4,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 888,
+   "name": "Painting",
+   "x": 3091,
+   "z": 3110,
+   "level": 0,
+   "distance": 4,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 1096,
+   "name": "Rocking chair",
+   "x": 3094,
+   "z": 3102,
+   "level": 0,
+   "distance": 4,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 2724,
+   "name": "Fireplace",
+   "x": 3095,
+   "z": 3102,
+   "level": 0,
+   "distance": 4,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 1106,
+   "name": "Bench",
+   "x": 3096,
+   "z": 3102,
+   "level": 0,
+   "distance": 4,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 3037,
+   "name": "Oak",
+   "x": 3098,
+   "z": 3102,
+   "level": 0,
+   "distance": 4,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 3014,
+   "name": "Door",
+   "x": 3098,
+   "z": 3107,
+   "level": 0,
+   "distance": 4,
+   "optionsWithIndex": [
+    {
+     "text": "Open",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Open"
+   ],
+   "reachable": true
+  },
+  {
+   "id": 1195,
+   "name": "Flowers",
+   "x": 3098,
+   "z": 3109,
+   "level": 0,
+   "distance": 4,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1092,
+   "name": "Chair",
+   "x": 3089,
+   "z": 3103,
+   "level": 0,
+   "distance": 5,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 1092,
+   "name": "Chair",
+   "x": 3089,
+   "z": 3104,
+   "level": 0,
+   "distance": 5,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 1092,
+   "name": "Chair",
+   "x": 3089,
+   "z": 3105,
+   "level": 0,
+   "distance": 5,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 1092,
+   "name": "Chair",
+   "x": 3089,
+   "z": 3106,
+   "level": 0,
+   "distance": 5,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 683,
+   "name": "Grandfather clock",
+   "x": 3092,
+   "z": 3101,
+   "level": 0,
+   "distance": 5,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 1096,
+   "name": "Rocking chair",
+   "x": 3094,
+   "z": 3101,
+   "level": 0,
+   "distance": 5,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 380,
+   "name": "Bookcase",
+   "x": 3095,
+   "z": 3111,
+   "level": 0,
+   "distance": 5,
+   "optionsWithIndex": [
+    {
+     "text": "Search",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Search"
+   ],
+   "reachable": true
+  },
+  {
+   "id": 1195,
+   "name": "Flowers",
+   "x": 3098,
+   "z": 3111,
+   "level": 0,
+   "distance": 5,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1195,
+   "name": "Flowers",
+   "x": 3099,
+   "z": 3105,
+   "level": 0,
+   "distance": 5,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 3037,
+   "name": "Oak",
+   "x": 3099,
+   "z": 3109,
+   "level": 0,
+   "distance": 5,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 1106,
+   "name": "Bench",
+   "x": 3088,
+   "z": 3101,
+   "level": 0,
+   "distance": 6,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 596,
+   "name": "Table",
+   "x": 3088,
+   "z": 3103,
+   "level": 0,
+   "distance": 6,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 375,
+   "name": "Closed chest",
+   "x": 3092,
+   "z": 3112,
+   "level": 0,
+   "distance": 6,
+   "optionsWithIndex": [
+    {
+     "text": "Open",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Open"
+   ],
+   "reachable": true
+  },
+  {
+   "id": 346,
+   "name": "Cabinet",
+   "x": 3093,
+   "z": 3100,
+   "level": 0,
+   "distance": 6,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 346,
+   "name": "Cabinet",
+   "x": 3094,
+   "z": 3100,
+   "level": 0,
+   "distance": 6,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1158,
+   "name": "Potted plant",
+   "x": 3094,
+   "z": 3112,
+   "level": 0,
+   "distance": 6,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 374,
+   "name": "Hat stand",
+   "x": 3095,
+   "z": 3100,
+   "level": 0,
+   "distance": 6,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1197,
+   "name": "Flower",
+   "x": 3097,
+   "z": 3112,
+   "level": 0,
+   "distance": 6,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1196,
+   "name": "Flowers",
+   "x": 3100,
+   "z": 3108,
+   "level": 0,
+   "distance": 6,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1092,
+   "name": "Chair",
+   "x": 3087,
+   "z": 3103,
+   "level": 0,
+   "distance": 7,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 1092,
+   "name": "Chair",
+   "x": 3087,
+   "z": 3104,
+   "level": 0,
+   "distance": 7,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1092,
+   "name": "Chair",
+   "x": 3087,
+   "z": 3105,
+   "level": 0,
+   "distance": 7,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 888,
+   "name": "Painting",
+   "x": 3087,
+   "z": 3105,
+   "level": 0,
+   "distance": 7,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1092,
+   "name": "Chair",
+   "x": 3087,
+   "z": 3106,
+   "level": 0,
+   "distance": 7,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 374,
+   "name": "Hat stand",
+   "x": 3087,
+   "z": 3107,
+   "level": 0,
+   "distance": 7,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": true
+  },
+  {
+   "id": 3033,
+   "name": "Tree",
+   "x": 3087,
+   "z": 3109,
+   "level": 0,
+   "distance": 7,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 1196,
+   "name": "Flowers",
+   "x": 3101,
+   "z": 3106,
+   "level": 0,
+   "distance": 7,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1195,
+   "name": "Flowers",
+   "x": 3102,
+   "z": 3104,
+   "level": 0,
+   "distance": 8,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 3033,
+   "name": "Tree",
+   "x": 3095,
+   "z": 3097,
+   "level": 0,
+   "distance": 9,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 3033,
+   "name": "Tree",
+   "x": 3099,
+   "z": 3097,
+   "level": 0,
+   "distance": 9,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 3033,
+   "name": "Tree",
+   "x": 3084,
+   "z": 3105,
+   "level": 0,
+   "distance": 10,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 1187,
+   "name": "Flower",
+   "x": 3084,
+   "z": 3112,
+   "level": 0,
+   "distance": 10,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1187,
+   "name": "Flower",
+   "x": 3085,
+   "z": 3116,
+   "level": 0,
+   "distance": 10,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 3033,
+   "name": "Tree",
+   "x": 3087,
+   "z": 3096,
+   "level": 0,
+   "distance": 10,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 3037,
+   "name": "Oak",
+   "x": 3092,
+   "z": 3096,
+   "level": 0,
+   "distance": 10,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 1187,
+   "name": "Flower",
+   "x": 3093,
+   "z": 3116,
+   "level": 0,
+   "distance": 10,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1187,
+   "name": "Flower",
+   "x": 3100,
+   "z": 3116,
+   "level": 0,
+   "distance": 10,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 3033,
+   "name": "Tree",
+   "x": 3083,
+   "z": 3099,
+   "level": 0,
+   "distance": 11,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 3036,
+   "name": "Tree",
+   "x": 3084,
+   "z": 3095,
+   "level": 0,
+   "distance": 11,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 1187,
+   "name": "Flower",
+   "x": 3096,
+   "z": 3117,
+   "level": 0,
+   "distance": 11,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 3033,
+   "name": "Tree",
+   "x": 3099,
+   "z": 3095,
+   "level": 0,
+   "distance": 11,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 3033,
+   "name": "Tree",
+   "x": 3105,
+   "z": 3098,
+   "level": 0,
+   "distance": 11,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 473,
+   "name": "Rockslide",
+   "x": 3082,
+   "z": 3096,
+   "level": 0,
+   "distance": 12,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1187,
+   "name": "Flower",
+   "x": 3082,
+   "z": 3114,
+   "level": 0,
+   "distance": 12,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1189,
+   "name": "Daisies",
+   "x": 3085,
+   "z": 3094,
+   "level": 0,
+   "distance": 12,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 3033,
+   "name": "Tree",
+   "x": 3106,
+   "z": 3096,
+   "level": 0,
+   "distance": 12,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 3033,
+   "name": "Tree",
+   "x": 3106,
+   "z": 3104,
+   "level": 0,
+   "distance": 12,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 1189,
+   "name": "Daisies",
+   "x": 3081,
+   "z": 3101,
+   "level": 0,
+   "distance": 13,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 3036,
+   "name": "Tree",
+   "x": 3081,
+   "z": 3117,
+   "level": 0,
+   "distance": 13,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 374,
+   "name": "Hat stand",
+   "x": 3083,
+   "z": 3119,
+   "level": 0,
+   "distance": 13,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 903,
+   "name": "Unicorn's head",
+   "x": 3084,
+   "z": 3119,
+   "level": 0,
+   "distance": 13,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 906,
+   "name": "Bull's head",
+   "x": 3085,
+   "z": 3119,
+   "level": 0,
+   "distance": 13,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 905,
+   "name": "Dragon's head",
+   "x": 3086,
+   "z": 3119,
+   "level": 0,
+   "distance": 13,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 381,
+   "name": "Bookcase",
+   "x": 3087,
+   "z": 3119,
+   "level": 0,
+   "distance": 13,
+   "optionsWithIndex": [
+    {
+     "text": "Search",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Search"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 3029,
+   "name": "Ladder",
+   "x": 3088,
+   "z": 3119,
+   "level": 0,
+   "distance": 13,
+   "optionsWithIndex": [
+    {
+     "text": "Climb-down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Climb-down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 584,
+   "name": "Statue",
+   "x": 3089,
+   "z": 3119,
+   "level": 0,
+   "distance": 13,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 3037,
+   "name": "Oak",
+   "x": 3094,
+   "z": 3093,
+   "level": 0,
+   "distance": 13,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 3033,
+   "name": "Tree",
+   "x": 3096,
+   "z": 3119,
+   "level": 0,
+   "distance": 13,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 1187,
+   "name": "Flower",
+   "x": 3099,
+   "z": 3119,
+   "level": 0,
+   "distance": 13,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 3033,
+   "name": "Tree",
+   "x": 3105,
+   "z": 3093,
+   "level": 0,
+   "distance": 13,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 1187,
+   "name": "Flower",
+   "x": 3080,
+   "z": 3093,
+   "level": 0,
+   "distance": 14,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1189,
+   "name": "Daisies",
+   "x": 3080,
+   "z": 3101,
+   "level": 0,
+   "distance": 14,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1189,
+   "name": "Daisies",
+   "x": 3080,
+   "z": 3102,
+   "level": 0,
+   "distance": 14,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 836,
+   "name": "Bow cabinet",
+   "x": 3080,
+   "z": 3119,
+   "level": 0,
+   "distance": 14,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 3015,
+   "name": "Gate",
+   "x": 3089,
+   "z": 3092,
+   "level": 0,
+   "distance": 14,
+   "optionsWithIndex": [
+    {
+     "text": "Open",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Open"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 1187,
+   "name": "Flower",
+   "x": 3091,
+   "z": 3120,
+   "level": 0,
+   "distance": 14,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 3033,
+   "name": "Tree",
+   "x": 3094,
+   "z": 3120,
+   "level": 0,
+   "distance": 14,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 1189,
+   "name": "Daisies",
+   "x": 3108,
+   "z": 3094,
+   "level": 0,
+   "distance": 14,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 3033,
+   "name": "Tree",
+   "x": 3108,
+   "z": 3106,
+   "level": 0,
+   "distance": 14,
+   "optionsWithIndex": [
+    {
+     "text": "Chop down",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Chop down"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 1187,
+   "name": "Flower",
+   "x": 3079,
+   "z": 3106,
+   "level": 0,
+   "distance": 15,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 346,
+   "name": "Cabinet",
+   "x": 3080,
+   "z": 3121,
+   "level": 0,
+   "distance": 15,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1189,
+   "name": "Daisies",
+   "x": 3081,
+   "z": 3091,
+   "level": 0,
+   "distance": 15,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 834,
+   "name": "Sword cabinet",
+   "x": 3082,
+   "z": 3121,
+   "level": 0,
+   "distance": 15,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1189,
+   "name": "Daisies",
+   "x": 3084,
+   "z": 3091,
+   "level": 0,
+   "distance": 15,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1096,
+   "name": "Rocking chair",
+   "x": 3088,
+   "z": 3121,
+   "level": 0,
+   "distance": 15,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 3016,
+   "name": "Gate",
+   "x": 3089,
+   "z": 3091,
+   "level": 0,
+   "distance": 15,
+   "optionsWithIndex": [
+    {
+     "text": "Open",
+     "opIndex": 1
+    }
+   ],
+   "options": [
+    "Open"
+   ],
+   "reachable": false
+  },
+  {
+   "id": 2725,
+   "name": "Fireplace",
+   "x": 3089,
+   "z": 3121,
+   "level": 0,
+   "distance": 15,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  },
+  {
+   "id": 1189,
+   "name": "Daisies",
+   "x": 3109,
+   "z": 3096,
+   "level": 0,
+   "distance": 15,
+   "optionsWithIndex": [],
+   "options": [],
+   "reachable": false
+  }
+ ],
+ "groundItems": [],
+ "gameMessages": [
+  {
+   "type": 0,
+   "text": "Welcome to RuneScape.",
+   "sender": "",
+   "tick": 1,
+   "observationId": 1,
+   "fromSelf": false
+  }
+ ],
+ "recentDialogs": [],
+ "menuActions": [],
+ "shop": {
+  "isOpen": false,
+  "title": "",
+  "shopItems": [],
+  "playerItems": []
+ },
+ "bank": {
+  "isOpen": false,
+  "items": [],
+  "noteMode": false
+ },
+ "trade": {
+  "isOpen": false,
+  "screen": null,
+  "partner": null,
+  "myOffer": [],
+  "theirOffer": [],
+  "myAccepted": false,
+  "partnerAccepted": false
+ },
+ "ge": null,
+ "inGame": true,
+ "combatEvents": [],
+ "dialog": {
+  "isOpen": false,
+  "options": [],
+  "isWaiting": false,
+  "allComponents": []
+ },
+ "interface": {
+  "isOpen": true,
+  "interfaceId": 3559,
+  "options": [
+   {
+    "index": 1,
+    "text": "Accept",
+    "componentId": 3651
+   },
+   {
+    "index": 2,
+    "text": "Recolour hair",
+    "componentId": 3657
+   },
+   {
+    "index": 3,
+    "text": "Change head",
+    "componentId": 3659
+   },
+   {
+    "index": 4,
+    "text": "Change jaw",
+    "componentId": 3660
+   },
+   {
+    "index": 5,
+    "text": "Change torso",
+    "componentId": 3661
+   },
+   {
+    "index": 6,
+    "text": "Change arms",
+    "componentId": 3662
+   },
+   {
+    "index": 7,
+    "text": "Change hands",
+    "componentId": 3663
+   },
+   {
+    "index": 8,
+    "text": "Change legs",
+    "componentId": 3664
+   },
+   {
+    "index": 9,
+    "text": "Change feet",
+    "componentId": 3665
+   },
+   {
+    "index": 10,
+    "text": "Change head",
+    "componentId": 3666
+   },
+   {
+    "index": 11,
+    "text": "Change jaw",
+    "componentId": 3667
+   },
+   {
+    "index": 12,
+    "text": "Change torso",
+    "componentId": 3668
+   },
+   {
+    "index": 13,
+    "text": "Change arms",
+    "componentId": 3669
+   },
+   {
+    "index": 14,
+    "text": "Change hands",
+    "componentId": 3670
+   },
+   {
+    "index": 15,
+    "text": "Change legs",
+    "componentId": 3671
+   },
+   {
+    "index": 16,
+    "text": "Change feet",
+    "componentId": 3672
+   },
+   {
+    "index": 17,
+    "text": "Recolour hair",
+    "componentId": 3679
+   },
+   {
+    "index": 18,
+    "text": "Recolour legs",
+    "componentId": 3680
+   },
+   {
+    "index": 19,
+    "text": "Recolour torso",
+    "componentId": 3681
+   },
+   {
+    "index": 20,
+    "text": "Recolour feet",
+    "componentId": 3682
+   },
+   {
+    "index": 21,
+    "text": "Recolour skin",
+    "componentId": 3683
+   },
+   {
+    "index": 22,
+    "text": "Recolour torso",
+    "componentId": 3685
+   },
+   {
+    "index": 23,
+    "text": "Recolour legs",
+    "componentId": 3687
+   },
+   {
+    "index": 24,
+    "text": "Recolour feet",
+    "componentId": 3688
+   },
+   {
+    "index": 25,
+    "text": "Recolour skin",
+    "componentId": 3689
+   },
+   {
+    "index": 26,
+    "text": "Male",
+    "componentId": 3698
+   },
+   {
+    "index": 27,
+    "text": "Female",
+    "componentId": 3699
+   }
+  ],
+  "debugInfo": [
+   "#3559 type=0 btn=0 text=\"\"",
+   "  #3560 type=5 btn=0 text=\"\"",
+   "  #3561 type=5 btn=0 text=\"\"",
+   "  #3562 type=5 btn=0 text=\"\"",
+   "  #3563 type=5 btn=0 text=\"\"",
+   "  #3564 type=5 btn=0 text=\"\"",
+   "  #3565 type=5 btn=0 text=\"\"",
+   "  #3566 type=5 btn=0 text=\"\"",
+   "  #3567 type=5 btn=0 text=\"\"",
+   "  #3568 type=5 btn=0 text=\"\"",
+   "  #3569 type=5 btn=0 text=\"\"",
+   "  #3570 type=5 btn=0 text=\"\"",
+   "  #3571 type=5 btn=0 text=\"\"",
+   "  #3572 type=5 btn=0 text=\"\"",
+   "  #3573 type=5 btn=0 text=\"\"",
+   "  #3574 type=5 btn=0 text=\"\"",
+   "  #3575 type=5 btn=0 text=\"\"",
+   "  #3576 type=5 btn=0 text=\"\"",
+   "  #3577 type=5 btn=0 text=\"\"",
+   "  #3578 type=5 btn=0 text=\"\"",
+   "  #3579 type=5 btn=0 text=\"\"",
+   "  #3580 type=5 btn=0 text=\"\"",
+   "  #3581 type=5 btn=0 text=\"\"",
+   "  #3582 type=5 btn=0 text=\"\"",
+   "  #3583 type=5 btn=0 text=\"\"",
+   "  #3584 type=5 btn=0 text=\"\"",
+   "  #3585 type=5 btn=0 text=\"\"",
+   "  #3586 type=5 btn=0 text=\"\"",
+   "  #3587 type=5 btn=0 text=\"\"",
+   "  #3588 type=5 btn=0 text=\"\"",
+   "  #3589 type=5 btn=0 text=\"\"",
+   "  #3590 type=5 btn=0 text=\"\"",
+   "  #3591 type=5 btn=0 text=\"\"",
+   "  #3592 type=5 btn=0 text=\"\"",
+   "  #3593 type=5 btn=0 text=\"\"",
+   "  #3594 type=5 btn=0 text=\"\"",
+   "  #3595 type=5 btn=0 text=\"\"",
+   "  #3596 type=5 btn=0 text=\"\"",
+   "  #3597 type=5 btn=0 text=\"\"",
+   "  #3598 type=5 btn=0 text=\"\"",
+   "  #3599 type=5 btn=0 text=\"\"",
+   "  #3600 type=5 btn=0 text=\"\"",
+   "  #3601 type=5 btn=0 text=\"\"",
+   "  #3602 type=5 btn=0 text=\"\"",
+   "  #3603 type=5 btn=0 text=\"\"",
+   "  #3604 type=5 btn=0 text=\"\"",
+   "  #3605 type=5 btn=0 text=\"\"",
+   "  #3606 type=5 btn=0 text=\"\"",
+   "  #3607 type=5 btn=0 text=\"\"",
+   "  #3608 type=5 btn=0 text=\"\"",
+   "  #3609 type=5 btn=0 text=\"\"",
+   "  #3610 type=5 btn=0 text=\"\"",
+   "  #3611 type=5 btn=0 text=\"\"",
+   "  #3612 type=5 btn=0 text=\"\"",
+   "  #3613 type=5 btn=0 text=\"\"",
+   "  #3614 type=5 btn=0 text=\"\"",
+   "  #3615 type=5 btn=0 text=\"\"",
+   "  #3616 type=5 btn=0 text=\"\"",
+   "  #3617 type=5 btn=0 text=\"\"",
+   "  #3618 type=5 btn=0 text=\"\"",
+   "  #3619 type=5 btn=0 text=\"\"",
+   "  #3620 type=5 btn=0 text=\"\"",
+   "  #3621 type=5 btn=0 text=\"\"",
+   "  #3622 type=5 btn=0 text=\"\"",
+   "  #3623 type=5 btn=0 text=\"\"",
+   "  #3624 type=5 btn=0 text=\"\"",
+   "  #3625 type=5 btn=0 text=\"\"",
+   "  #3626 type=5 btn=0 text=\"\"",
+   "  #3627 type=5 btn=0 text=\"\"",
+   "  #3628 type=5 btn=0 text=\"\"",
+   "  #3629 type=5 btn=0 text=\"\"",
+   "  #3630 type=5 btn=0 text=\"\"",
+   "  #3631 type=5 btn=0 text=\"\"",
+   "  #3632 type=5 btn=0 text=\"\"",
+   "  #3633 type=5 btn=0 text=\"\"",
+   "  #3634 type=5 btn=0 text=\"\"",
+   "  #3635 type=5 btn=0 text=\"\"",
+   "  #3636 type=5 btn=0 text=\"\"",
+   "  #3637 type=5 btn=0 text=\"\"",
+   "  #3638 type=5 btn=0 text=\"\"",
+   "  #3639 type=5 btn=0 text=\"\"",
+   "  #3640 type=5 btn=0 text=\"\"",
+   "  #3641 type=5 btn=0 text=\"\"",
+   "  #3642 type=5 btn=0 text=\"\"",
+   "  #3643 type=5 btn=0 text=\"\"",
+   "  #3644 type=5 btn=0 text=\"\"",
+   "  #3645 type=5 btn=0 text=\"\"",
+   "  #3646 type=5 btn=0 text=\"\"",
+   "  #3647 type=5 btn=0 text=\"\"",
+   "  #3648 type=0 btn=0 text=\"\"",
+   "  #3649 type=4 btn=0 text=\"Welcome to RuneScape - Use the buttons below to design your player\"",
+   "  #3650 type=6 btn=0 text=\"\"",
+   "  #3651 type=3 btn=1 text=\"\"",
+   "  #3652 type=4 btn=0 text=\"Accept\"",
+   "  #3653 type=5 btn=0 text=\"\"",
+   "  #3654 type=5 btn=0 text=\"\"",
+   "  #3655 type=5 btn=0 text=\"\"",
+   "  #3656 type=5 btn=0 text=\"\"",
+   "  #3657 type=5 btn=1 text=\"\"",
+   "  #3658 type=4 btn=0 text=\"Torso\"",
+   "  #3659 type=5 btn=1 text=\"\"",
+   "  #3660 type=5 btn=1 text=\"\"",
+   "  #3661 type=5 btn=1 text=\"\"",
+   "  #3662 type=5 btn=1 text=\"\"",
+   "  #3663 type=5 btn=1 text=\"\"",
+   "  #3664 type=5 btn=1 text=\"\"",
+   "  #3665 type=5 btn=1 text=\"\"",
+   "  #3666 type=5 btn=1 text=\"\"",
+   "  #3667 type=5 btn=1 text=\"\"",
+   "  #3668 type=5 btn=1 text=\"\"",
+   "  #3669 type=5 btn=1 text=\"\"",
+   "  #3670 type=5 btn=1 text=\"\"",
+   "  #3671 type=5 btn=1 text=\"\"",
+   "  #3672 type=5 btn=1 text=\"\"",
+   "  #3673 type=4 btn=0 text=\"Arms\"",
+   "  #3674 type=4 btn=0 text=\"Legs\"",
+   "  #3675 type=4 btn=0 text=\"Head\"",
+   "  #3676 type=4 btn=0 text=\"Hands\"",
+   "  #3677 type=4 btn=0 text=\"Feet\"",
+   "  #3678 type=4 btn=0 text=\"Jaw\"",
+   "  #3679 type=5 btn=1 text=\"\"",
+   "  #3680 type=5 btn=1 text=\"\"",
+   "  #3681 type=5 btn=1 text=\"\"",
+   "  #3682 type=5 btn=1 text=\"\"",
+   "  #3683 type=5 btn=1 text=\"\"",
+   "  #3684 type=4 btn=0 text=\"Design\"",
+   "  #3685 type=5 btn=1 text=\"\"",
+   "  #3686 type=4 btn=0 text=\"Colour\"",
+   "  #3687 type=5 btn=1 text=\"\"",
+   "  #3688 type=5 btn=1 text=\"\"",
+   "  #3689 type=5 btn=1 text=\"\"",
+   "  #3690 type=4 btn=0 text=\"Hair\"",
+   "  #3691 type=4 btn=0 text=\"Torso\"",
+   "  #3692 type=4 btn=0 text=\"Legs\"",
+   "  #3693 type=4 btn=0 text=\"Skin\"",
+   "  #3694 type=4 btn=0 text=\"Feet\"",
+   "  #3695 type=5 btn=0 text=\"\"",
+   "  #3696 type=5 btn=0 text=\"\"",
+   "  #3697 type=4 btn=0 text=\"Gender\"",
+   "  #3698 type=5 btn=1 text=\"\"",
+   "  #3699 type=5 btn=1 text=\"\"",
+   "  #3700 type=4 btn=0 text=\"Male\"",
+   "  #3701 type=4 btn=0 text=\"Female\""
+  ]
+ },
+ "modalOpen": true,
+ "modalInterface": 3559,
+ "prayers": {
+  "activePrayers": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "prayerPoints": 1,
+  "prayerLevel": 1
+ },
+ "isSkulled": false,
+ "autoRetaliateEnabled": true,
+ "opFeedback": {
+  "mapFlagUnsetCount": 0,
+  "lastMapFlagUnsetTick": -1,
+  "opRejectedCount": 0,
+  "lastOpRejectedTick": -1
+ }
+}

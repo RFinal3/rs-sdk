@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "session": { "max_minutes": 30, "max_actions": 600 },
+  "decisions": {
+    "max_calls_per_session": 300,
+    "max_calls_per_minute": 20,
+    "max_spend_usd_per_session": 0.25,
+    "max_spend_usd_per_day": 1.0,
+    "request_deadline_ms": 3000,
+    "max_decision_age_ticks": 5,
+    "max_rejected_answers_in_a_row": 5
+  },
+  "checkins": { "every_minutes": 30, "on_events": ["goal_reached", "death", "guard_repeat", "stagnation", "rejection_limit", "session_end"] },
+  "goal_kinds_enabled": ["skill_loop"],
+  "allowed_areas": [
+    { "name": "lumbridge", "x_min": 3190, "x_max": 3265, "z_min": 3190, "z_max": 3265,
+      "notes": "Example bounds around Lumbridge castle and its trees. Check them in-game before relying on them." }
+  ],
+  "safety_guards": { "eat_below_hp_pct": 50, "retreat_below_hp_pct": 30, "stop_after_deaths": 1, "max_guard_firings_per_10min": 10 },
+  "quest_reading": { "guides": true, "quest_scripts_allowed_for": [] },
+  "harness_changes": { "require_owner_approval": true }
+}

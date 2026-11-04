@@ -1,0 +1,7 @@
+{
+ "error": "stale",
+ "message": "decision is 5 ticks old (max 2)",
+ "age_ticks": 5,
+ "tick": 1401,
+ "revision": 1449
+}

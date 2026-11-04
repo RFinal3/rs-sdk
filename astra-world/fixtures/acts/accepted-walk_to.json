@@ -1,0 +1,20 @@
+{
+ "action_id": "a-1793814350332-1",
+ "verb": "walk_to",
+ "outcome": "completed",
+ "result": {
+  "success": true,
+  "message": "Arrived"
+ },
+ "error": null,
+ "before": {
+  "tick": 1389,
+  "revision": 1429
+ },
+ "after": {
+  "tick": 1396,
+  "revision": 1444
+ },
+ "elapsed_ms": 2602,
+ "note": "result is the SDK's claim; confirm the effect from a fresh /observe before counting it"
+}
