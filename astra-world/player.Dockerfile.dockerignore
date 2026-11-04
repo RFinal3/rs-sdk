@@ -12,3 +12,5 @@ learnings/
 mcp/
 astra-world/harness/
 astra-world/owner/
+# lite-client cache written to "<cwd>/undefined/.cache" when HOME is unset (Windows)
+**/undefined/
