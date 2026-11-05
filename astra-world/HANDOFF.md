@@ -51,7 +51,8 @@ These come from Ryan and the 10-31 map. They are not yours to change; propose ch
 - NPC `index` is a world slot that gets reused. The bridge requires `{index, id}` together; still re-check the NPC's name and position in fresh state.
 - `skip_tutorial` takes about three dialog clicks on a new character.
 - A normal tree gives 1 log and 25 Woodcutting XP at `NODE_XPRATE=1`. Upstream defaults to 25× XP; Ryan's world runs at 1× unless he changes it, so check `limits` and real XP deltas before comparing rates.
-- After `cancel` or a `deadline`, the character stops where it is. The action is not undone.
+- After `cancel` or a `deadline`, the bridge sends a walk to the latest observed tile outside the aborted action scope, then waits up to five seconds for three consecutive fresh ticks at that tile. Network delay can allow brief movement before the replacement route takes effect. The action is not undone; this does not guarantee that combat or every other game effect has stopped.
+- `/cancel` reports `cancelled: true` only after movement confirmation. `/act` includes `stop.confirmed` for interrupted actions and failed SDK results (also on errors). If stop dispatch or confirmation fails, `/cancel` returns 503 with `stop_unconfirmed`; the bridge blocks further actions until the operator inspects the game and restarts it. `/health` exposes `stop_failure`. The interrupted `/act` retains its original outcome, so inspect its `stop` field too. `confirmed` means observed stationarity, not a server acknowledgement: the game can reject movement while the player is delayed, and the protocol does not expose cleared-route acknowledgement. Continue observing after cancellation; do not treat it as a guarantee against later movement.
 - The world restarts cleanly and keeps your inventory and XP.
 
 ## How to run things

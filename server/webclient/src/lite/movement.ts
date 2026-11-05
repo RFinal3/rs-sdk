@@ -73,7 +73,10 @@ function route(
     // reach" result before those O(scene) fills. As in the existing
     // length<=0 branch below, no MOVE_OPCLICK packet is required here; the
     // caller immediately emits the interaction op.
-    if (srcX === dx && srcZ === dz) {
+    // A game click must still replace the server's queued route/interaction,
+    // even when its destination is the current tile (the bridge's stop request).
+    // Only interaction routing can skip the movement packet here.
+    if (type === 2 && srcX === dx && srcZ === dz) {
         return true;
     }
     if (locShape !== LocShape.WALL_STRAIGHT) {

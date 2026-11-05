@@ -72,6 +72,12 @@ docker compose -f astra-world/compose.yaml start world
 
 **Not tested:** Docker Desktop on Windows specifically (the sandbox's network blocked Debian's package mirror, so the `apt` steps were swapped out for that run only; everything else in both Dockerfiles ran as committed); browser-attached mode end to end; anything Jev.
 
+## Review follow-up (2026-11-05)
+
+The earlier live check only verified that cancellation stopped short of the final target; it did not prove immediate stopping. The bridge now dispatches a replacement route and checks three consecutive fresh ticks at the stop tile. `kit/live_check.py` also checks four later ticks without issuing an intervening action. See HANDOFF.md for the bounded confirmation and server-acknowledgement limitations.
+
+Offline validation of the follow-up uses Bun 1.4.4: bridge cancellation/deadline tests, real lite-client packet encoding, SDK cancellation/walk regressions, and 34 Python kit tests. Root and bridge TypeScript checks pass. Container, live-world, Windows, and browser-attached checks have not been rerun for these fixes. CI now explicitly runs the bridge and Python kit suites.
+
 ## Files
 
 | Path | What |

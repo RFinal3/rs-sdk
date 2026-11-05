@@ -18,10 +18,12 @@
  * Env:   BRIDGE_PORT (default 7790), BRIDGE_TOKEN (optional; required as X-Bridge-Token if set)
  */
 import { runScript } from '../../sdk/runner';
-import { executionContext, withExecutionDeadline } from '../../sdk/execution-context';
+import { executionContext } from '../../sdk/execution-context';
 import { formatWorldStateSummary } from '../../sdk/formatter';
 import type { BotWorldState } from '../../sdk/types';
 import { getVerb, BridgeError, bindParams, describeVerbs } from './verbs';
+
+import { executeAction, type StopResult } from './action-execution';
 
 const PORT = parseInt(process.env.BRIDGE_PORT || '7790', 10);
 const TOKEN = process.env.BRIDGE_TOKEN || '';
@@ -29,7 +31,7 @@ const MAX_BODY = 64 * 1024;
 const MAX_DEADLINE_MS = 300_000;
 const ACTION_ID = /^[A-Za-z0-9._:-]{1,64}$/;
 
-type InFlight = { actionId: string; verb: string; controller: AbortController; startedMs: number };
+type InFlight = { actionId: string; verb: string; controller: AbortController; startedMs: number; done: Promise<Awaited<ReturnType<typeof executeAction>>> };
 
 const json = (status: number, body: unknown) =>
     new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
@@ -51,6 +53,7 @@ async function readBody(req: Request): Promise<any> {
 
 await runScript(async ({ bot, sdk }) => {
     let inFlight: InFlight | null = null;
+    let stopFailure: StopResult | null = null;
     const parentSignal = executionContext.getStore()?.signal;
 
     const server = Bun.serve({
@@ -62,7 +65,7 @@ await runScript(async ({ bot, sdk }) => {
             try {
                 if (req.method === 'GET' && url.pathname === '/health') {
                     const s = sdk.getState();
-                    return json(200, { connected: sdk.isConnected(), in_game: !!s?.inGame, busy: inFlight?.actionId ?? null, ...stamp(s) });
+                    return json(200, { connected: sdk.isConnected(), in_game: !!s?.inGame, busy: inFlight?.actionId ?? null, stop_failure: stopFailure, ...stamp(s) });
                 }
                 if (req.method === 'GET' && url.pathname === '/verbs') {
                     return json(200, describeVerbs());
@@ -80,8 +83,12 @@ await runScript(async ({ bot, sdk }) => {
                     if (b.action_id && b.action_id !== inFlight.actionId) {
                         return json(409, { cancelled: false, reason: 'different_action_in_flight', in_flight: inFlight.actionId });
                     }
-                    inFlight.controller.abort(new Error('Cancelled by harness'));
-                    return json(200, { cancelled: true, action_id: inFlight.actionId });
+                    const action = inFlight;
+                    action.controller.abort(new Error('Cancelled by harness'));
+                    const settled = await action.done;
+                    const confirmed = settled.stop?.confirmed === true;
+                    return json(confirmed ? 200 : 503, { cancelled: confirmed, action_id: action.actionId,
+                        stop: settled.stop, error: confirmed ? null : 'stop_unconfirmed' });
                 }
                 if (req.method === 'POST' && url.pathname === '/act') {
                     return await act(await readBody(req));
@@ -105,6 +112,7 @@ await runScript(async ({ bot, sdk }) => {
         if (!Number.isInteger(deadline) || deadline < 100 || deadline > MAX_DEADLINE_MS) {
             throw new BridgeError('bad_params', `deadline_ms must be an integer in [100, ${MAX_DEADLINE_MS}]`);
         }
+        if (stopFailure) return json(503, { error: 'stop_unconfirmed', message: 'Stop was not confirmed; operator must inspect the game and restart the bridge', stop: stopFailure });
         if (inFlight) return json(409, { error: 'busy', in_flight: inFlight.actionId });
 
         const before = sdk.getState();
@@ -131,26 +139,21 @@ await runScript(async ({ bot, sdk }) => {
         const onParentAbort = () => controller.abort(parentSignal?.reason);
         parentSignal?.addEventListener('abort', onParentAbort, { once: true });
         const startedMs = Date.now();
-        inFlight = { actionId, verb: b.verb, controller, startedMs };
-        let result: any, outcome: 'completed' | 'deadline' | 'cancelled' | 'error' = 'completed', error: string | undefined;
-        try {
-            result = await executionContext.run({ signal: controller.signal }, () =>
-                withExecutionDeadline(deadline, () => verb.run({ bot, sdk, state: before }, params), () => {
-                    outcome = 'deadline';
-                    return { success: false, message: `deadline ${deadline}ms exceeded`, reason: 'deadline' };
-                }));
-        } catch (e) {
-            const msg = String((e as Error)?.message ?? e);
-            if (controller.signal.aborted) { outcome = 'cancelled'; error = msg; }
-            else { outcome = 'error'; error = msg; }
-        } finally {
-            parentSignal?.removeEventListener('abort', onParentAbort);
-            inFlight = null;
-        }
+        if (parentSignal?.aborted) onParentAbort();
+        // Defer execution until the in-flight slot exists, including synchronous verbs.
+        const done = Promise.resolve().then(() => executeAction(sdk, controller, deadline,
+            () => verb.run({ bot, sdk, state: before }, params)));
+        inFlight = { actionId, verb: b.verb, controller, startedMs, done };
+        const settled = await done;
+        if (settled.stop && !settled.stop.confirmed) stopFailure = settled.stop;
+        parentSignal?.removeEventListener('abort', onParentAbort);
+        inFlight = null;
+        const { result, outcome, error, stop } = settled;
         const after = sdk.getState();
         return json(200, {
             action_id: actionId,
             verb: b.verb,
+            stop,                          // bounded game-side movement confirmation, or null
             outcome,                       // completed | deadline | cancelled | error
             result: result ?? null,        // the SDK's ActionResult (success, message, reason?, phase?)
             error: error ?? null,

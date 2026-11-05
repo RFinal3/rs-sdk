@@ -85,10 +85,22 @@ check("second action refused while one is in flight", busy.refused and busy.erro
 c = hands.cancel("long-walk")
 t.join(timeout=20)
 lw = box.get("r")
-check("cancel stops the walk", bool(c.get("cancelled")) and lw is not None and lw.outcome == "cancelled",
+check("cancel stops the walk", bool(c.get("cancelled")) and c.get("stop", {}).get("confirmed") is True and lw is not None and lw.outcome == "cancelled",
       f"cancel={c} outcome={getattr(lw, 'outcome', None)}")
-s3 = settle()
-check("character stopped short of the far target", pos(s3) != far, f"at={pos(s3)} far={far}")
+# Do not issue wait_idle or another action that could hide continued movement.
+s3 = hands.observe()
+stop_pos = pos(s3)
+last_tick, observed_ticks, stayed = s3.tick, 0, True
+until = time.monotonic() + 5
+while observed_ticks < 4 and time.monotonic() < until:
+    time.sleep(0.1)
+    fresh = hands.observe()
+    if fresh.tick > last_tick:
+        observed_ticks += 1
+        last_tick = fresh.tick
+        stayed = stayed and pos(fresh) == stop_pos
+check("character remains stopped across four later ticks", observed_ticks == 4 and stayed and stop_pos != far,
+      f"at={stop_pos} far={far} fresh_ticks={observed_ticks} stationary={stayed}")
 
 # 7. a real skilling effect, confirmed from inventory
 s4 = hands.observe()
