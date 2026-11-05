@@ -1,0 +1,67 @@
+# astra-world: Ryan's private world + Astra's player, all Linux containers.
+#
+#   docker compose -f astra-world/compose.yaml up -d --build      (from the repo root)
+#   open http://127.0.0.1:8888/rs2.cgi                             (play / watch)
+#   docker compose -f astra-world/compose.yaml exec player python3 /opt/rs/astra-world/kit/live_check.py
+#
+# Nothing is reachable from outside this PC: ports bind to 127.0.0.1 only.
+# The player container is on the internal `game` network only: no internet, no host.
+name: rsworld
+
+services:
+  world:
+    build:
+      context: ..
+      dockerfile: server/Dockerfile      # upstream's own Linux image (engine + gateway + web client)
+    image: rsworld-world:local
+    environment:
+      WEB_PORT: "8888"
+      NODE_TICKRATE: "400"               # ms per tick; raise to slow the world for early experiments
+      NODE_XPRATE: "${NODE_XPRATE:-1}"   # XP multiplier. Upstream rs-sdk defaults to 25 ("accelerated XP for
+                                         # botting"); 1 = normal RuneScape rates. Ryan's call.
+    volumes:
+      - rsworld-data:/opt/server/data    # saves + db; back this up before experiments
+    ports:
+      - "127.0.0.1:8888:8888"            # web client: play, watch
+      - "127.0.0.1:7780:7780"            # gateway: only needed for watch mode A (browser-attached Astra)
+    networks: [game, edge]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "bun", "-e", "fetch('http://127.0.0.1:8888/rs2.cgi').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  player:
+    build:
+      context: ..
+      dockerfile: astra-world/player.Dockerfile
+    image: rsworld-player:local
+    environment:
+      BOT_USERNAME: "${BOT_USERNAME:-Astra}"
+      PLAYER_CLIENT: "${PLAYER_CLIENT:-lite}"   # lite | browser
+      WORLD_HOST: "world"
+      SHOW_CHAT: "${SHOW_CHAT:-false}"          # Ryan decides; chat is untrusted input either way
+    volumes:
+      - player-secrets:/secrets
+      - "${ASTRA_HARNESS_DIR:-./harness}:/harness"   # Astra's harness + goal file + reports (she writes here)
+      - "./owner:/owner:ro"                           # Ryan's limits.json; read-only to everything here
+    networks: [game]
+    depends_on:
+      world:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # decision:   the protected Jev decision service goes here later (r2 option B):
+  #             holds the provider key, reachable from `player` on its own internal
+  #             network, egress only to the provider. Not part of this stack yet.
+
+networks:
+  game:
+    internal: true
+  edge: {}
+
+volumes:
+  rsworld-data: {}
+  player-secrets: {}

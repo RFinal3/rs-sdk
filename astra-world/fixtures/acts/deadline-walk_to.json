@@ -1,0 +1,21 @@
+{
+ "action_id": "a-1793814362558-6",
+ "verb": "walk_to",
+ "outcome": "deadline",
+ "result": {
+  "success": false,
+  "message": "deadline 100ms exceeded",
+  "reason": "deadline"
+ },
+ "error": null,
+ "before": {
+  "tick": 1420,
+  "revision": 1469
+ },
+ "after": {
+  "tick": 1420,
+  "revision": 1470
+ },
+ "elapsed_ms": 101,
+ "note": "result is the SDK's claim; confirm the effect from a fresh /observe before counting it"
+}

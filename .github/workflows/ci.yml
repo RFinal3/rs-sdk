@@ -29,6 +29,11 @@ jobs:
         working-directory: server/engine
         run: bun install --frozen-lockfile
 
+      - name: Test Astra bridge and Python kit
+        run: |
+          bun test astra-world/bridge
+          PYTHONPATH=astra-world/kit python3 -m unittest discover -s astra-world/kit/tests
+
       - name: Build game content for compiled-script regression tests
         working-directory: server/engine
         env:

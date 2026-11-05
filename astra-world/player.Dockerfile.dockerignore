@@ -1,0 +1,16 @@
+**/node_modules/
+**/__pycache__/
+.git/
+server/webclient/out/
+server/engine/
+server/content/
+server/gateway/
+bots/
+docs/
+wiki/
+learnings/
+mcp/
+astra-world/harness/
+astra-world/owner/
+# lite-client cache written to "<cwd>/undefined/.cache" when HOME is unset (Windows)
+**/undefined/

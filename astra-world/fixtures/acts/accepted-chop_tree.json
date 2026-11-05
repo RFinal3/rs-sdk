@@ -1,0 +1,27 @@
+{
+ "action_id": "a-1793814355177-4",
+ "verb": "chop_tree",
+ "outcome": "completed",
+ "result": {
+  "success": true,
+  "logs": {
+   "slot": 18,
+   "id": 1511,
+   "name": "Logs",
+   "count": 1,
+   "optionsWithIndex": []
+  },
+  "message": "Chopped Tree"
+ },
+ "error": null,
+ "before": {
+  "tick": 1401,
+  "revision": 1449
+ },
+ "after": {
+  "tick": 1419,
+  "revision": 1468
+ },
+ "elapsed_ms": 6978,
+ "note": "result is the SDK's claim; confirm the effect from a fresh /observe before counting it"
+}
