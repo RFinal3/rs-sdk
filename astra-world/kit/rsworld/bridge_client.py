@@ -113,6 +113,10 @@ class BridgeClient:
         _, body = self._request("GET", "/health")
         return body
 
+    def get_raw(self, path: str, timeout_s: float | None = None) -> tuple[int, dict]:
+        """Any read-only GET, returning (HTTP status, JSON body) untouched (the runner's mirror)."""
+        return self._request("GET", path, timeout_s=timeout_s)
+
     def verbs(self) -> dict:
         _, body = self._request("GET", "/verbs")
         return body

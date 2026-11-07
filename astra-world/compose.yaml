@@ -37,10 +37,12 @@ services:
     build:
       context: ..
       dockerfile: astra-world/player.Dockerfile
+      args:
+        PLAYER_CAMERA: "${PLAYER_CAMERA:-true}"   # include Chromium for the camera mode
     image: rsworld-player:local
     environment:
       BOT_USERNAME: "${BOT_USERNAME:-Astra}"
-      PLAYER_CLIENT: "${PLAYER_CLIENT:-lite}"   # lite | browser
+      PLAYER_CLIENT: "${PLAYER_CLIENT:-lite}"   # lite | headless-browser (camera) | browser
       WORLD_HOST: "world"
       SHOW_CHAT: "${SHOW_CHAT:-false}"          # Ryan decides; chat is untrusted input either way
     volumes:
@@ -52,6 +54,25 @@ services:
       world:
         condition: service_healthy
     restart: unless-stopped
+
+  # The runner: plays Astra's queued cards one session at a time, enforces STOP, mirrors the
+  # game into her folder and writes events to her inbox. Never acts in the game itself.
+  # Shares the player's network (the bridge is on the player's 127.0.0.1:7790), not its
+  # processes or its secrets volume, so it never sees the character's password.
+  runner:
+    image: rsworld-player:local
+    pull_policy: never
+    entrypoint: ["python3", "/opt/rs/astra-world/runner/runner.py"]
+    network_mode: "service:player"
+    volumes:
+      - "${ASTRA_HARNESS_DIR:-./harness}:/harness"
+      - "./owner:/owner:ro"
+    depends_on:
+      player:
+        condition: service_started
+        restart: true                    # follow the player when it restarts (its network goes with it)
+    restart: unless-stopped
+    stop_grace_period: 30s               # time to stop a session in phases (SIGTERM, /cancel, SIGKILL)
 
   # decision:   the protected Jev decision service goes here later (r2 option B):
   #             holds the provider key, reachable from `player` on its own internal

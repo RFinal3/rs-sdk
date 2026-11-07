@@ -10,6 +10,8 @@
  *   GET  /verbs           the fixed verb table (names, descriptions, param specs)
  *   GET  /observe         full current state + snapshot id (?summary=1 adds a text summary)
  *   POST /act             {action_id, verb, params, deadline_ms, decided_at_tick?, max_age_ticks?, expect_revision?}
+ *   GET  /screenshot      PNG of the game client's canvas: {tick, revision, png_base64}; 422 no_picture
+ *                         when the client can't draw (the lite client never can). Read-only.
  *   POST /cancel          {action_id?}   aborts the action in flight
  *
  * One action at a time (409 if busy). A refused action sends nothing to the game.
@@ -30,6 +32,8 @@ const TOKEN = process.env.BRIDGE_TOKEN || '';
 const MAX_BODY = 64 * 1024;
 const MAX_DEADLINE_MS = 300_000;
 const ACTION_ID = /^[A-Za-z0-9._:-]{1,64}$/;
+const SCREENSHOT_TIMEOUT_MS = 10_000;
+const MIN_SCREENSHOT_B64 = 100;   // a real canvas PNG is far larger; `data:,` or a stub is not a picture
 
 type InFlight = { actionId: string; verb: string; controller: AbortController; startedMs: number; done: Promise<Awaited<ReturnType<typeof executeAction>>> };
 
@@ -77,6 +81,9 @@ await runScript(async ({ bot, sdk }) => {
                     if (url.searchParams.get('summary') === '1') body.summary = formatWorldStateSummary(s);
                     return json(200, body);
                 }
+                if (req.method === 'GET' && url.pathname === '/screenshot') {
+                    return await screenshot();
+                }
                 if (req.method === 'POST' && url.pathname === '/cancel') {
                     const b = await readBody(req);
                     if (!inFlight) return json(200, { cancelled: false, reason: 'nothing_in_flight' });
@@ -100,6 +107,23 @@ await runScript(async ({ bot, sdk }) => {
             }
         },
     });
+
+    /** Read-only: ask the attached game client for a PNG of its canvas. Never acts in the game.
+     *  The headless lite client answers with an empty data URL, which is a failure, never a picture. */
+    async function screenshot(): Promise<Response> {
+        let dataUrl: string;
+        try {
+            dataUrl = await sdk.sendScreenshot(SCREENSHOT_TIMEOUT_MS);
+        } catch (e) {
+            return json(503, { error: 'screenshot_failed', message: String((e as Error)?.message ?? e) });
+        }
+        const m = /^data:image\/png;base64,([A-Za-z0-9+/=]+)$/.exec(typeof dataUrl === 'string' ? dataUrl : '');
+        if (!m || m[1]!.length < MIN_SCREENSHOT_B64) {
+            return json(422, { error: 'no_picture', message: 'the game client returned no picture (the headless '
+                + 'lite client cannot draw; run the player with PLAYER_CLIENT=headless-browser)' });
+        }
+        return json(200, { ...stamp(sdk.getState()), png_base64: m[1] });
+    }
 
     async function act(b: any): Promise<Response> {
         const actionId = b?.action_id;

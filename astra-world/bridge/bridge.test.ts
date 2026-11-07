@@ -22,7 +22,7 @@ afterAll(() => {
     mock.restore();
 });
 
-function fixture(failStop = false) {
+function fixture(failStop = false, opts: { screenshot?: () => Promise<string> } = {}) {
     let server: ReturnType<typeof Bun.serve>;
     let state: any = { tick: 10, revision: 10, inGame: true,
         player: { worldX: 50, worldZ: 60, level: 0, lifeId: 1 } };
@@ -35,6 +35,7 @@ function fixture(failStop = false) {
     const sdk = {
         getState: () => state,
         isConnected: () => true,
+        sendScreenshot: opts.screenshot ?? (async () => ''),
         sendWalk: async (...args: unknown[]) => {
             walks.push(args);
             if (failStop) stopStarted();
@@ -64,7 +65,8 @@ function fixture(failStop = false) {
     });
     const act = (id: string) => post('/act', { action_id: id, verb: 'walk_to',
         params: { x: 100, z: 100 }, deadline_ms: 10_000 });
-    return { act, post, started, stopping, walks,
+    const get = (path: string) => fetch(`http://127.0.0.1:${server!.port}${path}`);
+    return { act, post, get, started, stopping, walks,
         tick: () => { state = { ...state, tick: state.tick + 1 }; publish?.(); },
         close: async () => { parent.abort(new Error('test finished')); await running.catch(() => {}); },
     };
@@ -115,5 +117,37 @@ test('failed stop reports 503 cancellation and latches subsequent /act requests 
             expect(await refused.json()).toMatchObject({ error: 'stop_unconfirmed' });
         }
         expect(f.walks).toHaveLength(1);
+    } finally { await f.close(); }
+});
+
+const PNG_B64 = Buffer.from(new Uint8Array(200).map((_, i) => i)).toString('base64');
+
+test('/screenshot returns the client canvas as PNG base64 with the tick', async () => {
+    const f = fixture(false, { screenshot: async () => `data:image/png;base64,${PNG_B64}` });
+    try {
+        const r = await f.get('/screenshot');
+        expect(r.status).toBe(200);
+        expect(await r.json()).toMatchObject({ tick: 10, png_base64: PNG_B64 });
+    } finally { await f.close(); }
+});
+
+test('/screenshot: an empty picture (lite client, blank canvas) is 422 no_picture, never success', async () => {
+    for (const dataUrl of ['', 'data:,', 'data:image/png;base64,iVBO']) {
+        const f = fixture(false, { screenshot: async () => dataUrl });
+        try {
+            const r = await f.get('/screenshot');
+            expect(r.status).toBe(422);
+            expect(await r.json()).toMatchObject({ error: 'no_picture' });
+        } finally { await f.close(); }
+    }
+});
+
+test('/screenshot: a client error or timeout is 503 and sends no action', async () => {
+    const f = fixture(false, { screenshot: async () => { throw new Error('Screenshot request timed out'); } });
+    try {
+        const r = await f.get('/screenshot');
+        expect(r.status).toBe(503);
+        expect(await r.json()).toMatchObject({ error: 'screenshot_failed', message: 'Screenshot request timed out' });
+        expect(f.walks).toHaveLength(0);
     } finally { await f.close(); }
 });
