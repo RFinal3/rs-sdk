@@ -101,6 +101,12 @@ class Config:
     world_unavailable_after_s: float = 30.0
     screenshot_every_s: float = 10.0
     bad_request_after_s: float = 30.0
+    # The runner shares the player's network namespace. When Docker restarts the player (crash, or
+    # Astra's control/restart-player), that namespace is gone and only restarting the runner joins
+    # the new one (compose's depends_on.restart covers compose commands only). So after this long
+    # without the bridge, and with no session running, the runner exits and its restart policy
+    # brings it back on the player's new network (found in the 2026-11-07 live test).
+    exit_after_unreachable_s: float = 20.0
 
 
 @dataclass
@@ -466,6 +472,10 @@ class Runner:
             self.event("card_interrupted", card_id=card.stem,
                        reason="runner restarted (docker compose down/up, restart or reboot); playing it again")
 
+    def should_exit_unreachable(self) -> bool:
+        return (self.session is None and self._unreachable_since is not None
+                and self.clock() - self._unreachable_since >= self.cfg.exit_after_unreachable_s)
+
     def step(self) -> None:
         """One pass of the loop. Never raises for expected conditions."""
         self.mirror()
@@ -521,7 +531,7 @@ class Runner:
         self.clear_once("queue_empty")
         self.start_session(card)
 
-    def run_forever(self) -> None:
+    def run_forever(self) -> int:
         self.ensure_dirs()
         self.recover()
         self.status("starting")
@@ -541,13 +551,17 @@ class Runner:
             if self.shutting_down and self.session is None:
                 self.status("shut_down")
                 print("[runner] shut down", flush=True)
-                return
+                return 0
+            if self.should_exit_unreachable():
+                self.status("restarting_lost_bridge")
+                print(f"[runner] no bridge for {self.cfg.exit_after_unreachable_s:.0f} s; exiting so Docker restarts "
+                      "the runner on the player's current network", flush=True)
+                return 1
             time.sleep(self.cfg.poll_s)
 
 
 def main() -> int:
-    Runner(Config()).run_forever()
-    return 0
+    return Runner(Config()).run_forever()
 
 
 if __name__ == "__main__":

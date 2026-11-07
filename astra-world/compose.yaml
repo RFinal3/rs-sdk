@@ -38,9 +38,15 @@ services:
       retries: 30
       start_period: 30s
 
+  # The player: Astra's game client and bridge (her hands and eyes). Built from ASTRA_WORLD_SRC,
+  # Astra's own copy of this repo, when set (else this checkout). Her bridge, kit and
+  # player-entry.sh are also mounted live from it, so her changes take effect when the player
+  # restarts; she can ask for that by creating <harness>/control/restart-player.
+  # Ryan's controls stay out of her reach: owner/ is read-only, this file and .env are read only
+  # by compose on Ryan's PC, and the world and the runner are always built from this checkout.
   player:
     build:
-      context: ..
+      context: ${ASTRA_WORLD_SRC:-..}
       dockerfile: astra-world/player.Dockerfile
       args:
         PLAYER_CAMERA: "${PLAYER_CAMERA:-true}"   # include Chromium for the camera mode
@@ -50,10 +56,15 @@ services:
       PLAYER_CLIENT: "${PLAYER_CLIENT:-lite}"   # lite | headless-browser (camera) | browser
       WORLD_HOST: "world"
       SHOW_CHAT: "${SHOW_CHAT:-false}"          # Ryan decides; chat is untrusted input either way
+    entrypoint: ["bash", "/opt/rs/astra-world/player-entry.sh"]
     volumes:
       - player-secrets:/secrets
       - "${ASTRA_HARNESS_DIR:-./harness}:/harness"   # Astra's harness + goal file + reports (she writes here)
       - "./owner:/owner:ro"                           # Ryan's limits.json; read-only to everything here
+      # Astra's code, live (read-only inside the container; she edits it from her side).
+      - "${ASTRA_WORLD_SRC:-..}/astra-world/bridge:/opt/rs/astra-world/bridge:ro"
+      - "${ASTRA_WORLD_SRC:-..}/astra-world/kit:/opt/rs/astra-world/kit:ro"
+      - "${ASTRA_WORLD_SRC:-..}/astra-world/player-entry.sh:/opt/rs/astra-world/player-entry.sh:ro"
     networks: [game]
     depends_on:
       world:
@@ -65,9 +76,10 @@ services:
   # Shares the player's network (the bridge is on the player's 127.0.0.1:7790), not its
   # processes or its secrets volume, so it never sees the character's password.
   runner:
-    image: rsworld-player:local
-    pull_policy: never
-    entrypoint: ["python3", "/opt/rs/astra-world/runner/runner.py"]
+    build:
+      context: ..                        # always this checkout: STOP is enforced here, not in Astra's code
+      dockerfile: astra-world/runner.Dockerfile
+    image: rsworld-runner:local
     network_mode: "service:player"
     volumes:
       - "${ASTRA_HARNESS_DIR:-./harness}:/harness"

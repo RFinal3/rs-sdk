@@ -350,6 +350,28 @@ class RunnerTest(unittest.TestCase):
         self.assertEqual(sum(c.startswith("GET /observe") for c in self.bridge.calls), 1)
         self.assertNotIn("hunter2", (w / "observe.json").read_text())
 
+    def test_exits_after_losing_the_bridge_so_docker_reattaches_it(self):
+        self.r.cfg.exit_after_unreachable_s = 0.2
+        self.assertFalse(self.r.should_exit_unreachable())
+        self.bridge.down = True
+        self.r.bridge = self.bridge.client()
+        self.r.mirror(force=True)
+        self.assertFalse(self.r.should_exit_unreachable())          # not yet long enough
+        time.sleep(0.3)
+        self.r.mirror(force=True)
+        self.assertTrue(self.r.should_exit_unreachable())
+        self.bridge.down = False                                    # bridge back: no exit
+        self.r.bridge = self.bridge.client()
+        self.r.mirror(force=True)
+        self.assertFalse(self.r.should_exit_unreachable())
+
+    def test_never_exits_for_the_bridge_while_a_session_runs(self):
+        self.r.cfg.exit_after_unreachable_s = 0.0
+        self.card("busy", sleep=30)
+        self.run_until(self.started("busy"))
+        self.r._unreachable_since = self.r.clock() - 100
+        self.assertFalse(self.r.should_exit_unreachable())
+
     def test_mirror_bridge_down(self):
         self.bridge.down = True
         self.r.bridge = self.bridge.client()

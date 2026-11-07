@@ -113,4 +113,19 @@ PY
 cd /opt/rs
 # If the client drops later, the bridge aborts (onDisconnect: 'error'), the container
 # exits and compose restarts it (restart: unless-stopped).
-exec bun astra-world/bridge/bridge.ts "$BOT_USERNAME"
+#
+# Astra can restart the player (to pick up her edited bridge/kit/player-entry.sh, which are
+# mounted live) by creating <harness>/control/restart-player. The file is removed and the
+# container exits; compose starts it again, and the runner follows (card_interrupted, replay).
+RESTART_REQUEST=/harness/control/restart-player
+bun astra-world/bridge/bridge.ts "$BOT_USERNAME" &
+BRIDGE_PID=$!
+while kill -0 "$BRIDGE_PID" 2>/dev/null; do
+    if [ -e "$RESTART_REQUEST" ]; then
+        echo "[player] restart requested ($RESTART_REQUEST); exiting so compose restarts the player"
+        rm -f "$RESTART_REQUEST"
+        exit 0
+    fi
+    sleep 3
+done
+wait "$BRIDGE_PID"
