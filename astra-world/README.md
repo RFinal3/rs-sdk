@@ -65,7 +65,7 @@ Astra can change the code her character runs on (the bridge: what she can do and
 | Stays yours | Why |
 |---|---|
 | `astra-world/owner/` (`limits.json`, `STOP`) | in your checkout, mounted read-only |
-| `astra-world/.env` (incl. `STAFF_PASSWORD`) | read only by compose on your PC; never mounted, never in any image |
+| `astra-world/.env` (incl. `STAFF_PASSWORD`) | read only by compose on your PC; never mounted into these containers or built into an image. Astra's Hermes sandbox can still *read* it through its read-only `/code` mount of `coding_workspace`; Ryan accepts that (2026-11-07). Keep the file outside `coding_workspace` and use `docker compose --env-file <path>` if that ever changes. |
 | `astra-world/compose.yaml` | decides mounts, networks and settings; always yours, so her code can't give itself internet, your folders or your settings |
 | the world (game server) | always built from your checkout |
 | the runner (cards, STOP) | always built from your checkout (`runner.Dockerfile`) |
