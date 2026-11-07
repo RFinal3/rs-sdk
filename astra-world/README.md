@@ -48,6 +48,32 @@ What the runner writes into her folder: `status.json` (what it's doing now), `in
 
 With `PLAYER_CLIENT=headless-browser` in `astra-world/.env` (then `docker compose -f astra-world/compose.yaml up -d`), Astra's client runs as a headless Chromium page inside the player container instead of the lite client. She asks for a picture by writing `requests/screenshot-<id>.json`; the runner saves `world/screenshots/<id>.png` and tells her in `inbox/`. With the default `lite` client, requests come back `screenshot_failed` (lite can't draw). The image includes Chromium unless built with `PLAYER_CAMERA=false` in `.env`.
 
+## Astra builds her own player
+
+Astra can change the code her character runs on (the bridge: what she can do and see; the Python kit; the game-client side of the player) without you rebuilding anything. Your controls stay yours.
+
+**Set up once:**
+1. Give her a copy of this repo inside `astra_projects`, e.g. `git clone https://github.com/RFinal3/rs-sdk C:/path/to/astra_projects/rs-sdk`. She works on her own branch there.
+2. In `astra-world/.env` (in **your** checkout): `ASTRA_WORLD_SRC=C:/path/to/astra_projects/rs-sdk`.
+3. `docker compose -f astra-world/compose.yaml up -d --build` from your checkout, as usual.
+
+**How it works:**
+- The player image is built from her copy, and her `astra-world/bridge`, `astra-world/kit` and `astra-world/player-entry.sh` are mounted from it live (read-only inside the container).
+- To pick up her edits, she creates `<harness>/control/restart-player`. The player restarts in a few seconds, the runner reattaches by itself (about 20 s), and the card in play plays again.
+- Changes to anything baked into the image (dependencies, the SDK, `player.Dockerfile`) need a rebuild by you: `up -d --build`.
+
+| Stays yours | Why |
+|---|---|
+| `astra-world/owner/` (`limits.json`, `STOP`) | in your checkout, mounted read-only |
+| `astra-world/.env` (incl. `STAFF_PASSWORD`) | read only by compose on your PC; never mounted into these containers or built into an image. Astra's Hermes sandbox can still *read* it through its read-only `/code` mount of `coding_workspace`; Ryan accepts that (2026-11-07). Keep the file outside `coding_workspace` and use `docker compose --env-file <path>` if that ever changes. |
+| `astra-world/compose.yaml` | decides mounts, networks and settings; always yours, so her code can't give itself internet, your folders or your settings |
+| the world (game server) | always built from your checkout |
+| the runner (cards, STOP) | always built from your checkout (`runner.Dockerfile`) |
+
+You can always stop everything with `docker compose -f astra-world/compose.yaml down`. One thing to know: STOP's `/cancel` step goes through her bridge, which is now her code. The runner still kills her harness on STOP regardless, and `docker compose ... stop player` stops the character outright.
+
+Tested 2026-11-07 (Claude, Linux container): the player ran the copy's bridge (marked log line); the player had no staff settings and the staff password was in no file it could read; `/owner` and her mounted code were read-only inside the container; an edit plus `control/restart-player` brought up the new bridge in ~6 s, and the runner reattached and resumed the card within ~26 s. Not tested on Windows / Docker Desktop.
+
 ## Admin for your own character (follow Astra invisibly)
 
 Add two lines to `astra-world/.env`, then `docker compose -f astra-world/compose.yaml up -d` (the world image must be built from this branch):
@@ -147,6 +173,7 @@ Offline: 27 runner tests, 34 kit tests, 25 bridge tests (3 new for `/screenshot`
 | `bridge/forward.ts` | loopback forwarder (the SDK only speaks plain http/ws to `localhost`) |
 | `bridge/camera.ts` | camera mode: Astra's client in headless Chromium, so `GET /screenshot` has a picture |
 | `runner/runner.py` | the runner (cards, STOP, mirror, inbox, screenshots); tests in `runner/runner_tests/` |
+| `runner.Dockerfile` | the runner's own image, always from your checkout |
 | `kit/rsworld/` | Python: `bridge_client`, `contracts` (limits/goal/progress), `decider` (mock deciders, answer validation) |
 | `config/` | example limits and goal |
 | `fixtures/` | real states and act responses captured 2026-11-04, for offline tests |
