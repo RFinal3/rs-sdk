@@ -35,6 +35,7 @@ import { LoggerEventType } from '#/server/logger/LoggerEventType.js';
 import Environment from '#/util/Environment.js';
 import { printDebug } from '#/util/Logger.js';
 import { tryParseInt } from '#/util/TryParse.js';
+import { staffConfigured } from '#/server/login/staff.js';
 
 export default class ClientCheatHandler extends ClientGameMessageHandler<ClientCheat> {
     handle(message: ClientCheat, player: Player): boolean {
@@ -589,7 +590,7 @@ export default class ClientCheatHandler extends ClientGameMessageHandler<ClientC
                 }
 
                 player.teleJump((mx << 6) + lx, (mz << 6) + lz, level);
-            } else if (cmd === 'teleto' && Environment.node.production) {
+            } else if (cmd === 'teleto' && (Environment.node.production || staffConfigured(Environment.node))) {
                 // custom
                 if (args.length < 1) {
                     return false;
@@ -613,7 +614,7 @@ export default class ClientCheatHandler extends ClientGameMessageHandler<ClientC
                 player.unsetMapFlag();
 
                 player.teleJump(other.x, other.z, other.level);
-            } else if (cmd === 'setvis' && Environment.node.production) {
+            } else if (cmd === 'setvis' && (Environment.node.production || staffConfigured(Environment.node))) {
                 // authentic
                 if (args.length < 1) {
                     // ::setvis <level>

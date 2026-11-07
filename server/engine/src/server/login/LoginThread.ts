@@ -3,6 +3,7 @@ import { parentPort } from 'worker_threads';
 
 import { LoginClient } from '#/server/login/LoginClient.js';
 import Environment from '#/util/Environment.js';
+import { staffLevelForLogin } from '#/server/login/staff.js';
 
 import { type GenericLoginThreadResponse } from './index.d.js';
 import { trackLoginAttempts, trackLoginTime } from './LoginMetrics.js';
@@ -56,8 +57,13 @@ async function handleRequests(parentPort: ParentPort, msg: any) {
                 });
                 stopTimer();
             } else {
-                // rs-sdk: do not auto-grant dev staffmodlevel on non-production worlds (public server)
-                const staffmodlevel = 0;
+                // rs-sdk: do not auto-grant dev staffmodlevel on non-production worlds (public server).
+                // astra-world: only accounts named in NODE_STAFF_USERNAMES that log in with
+                // NODE_STAFF_PASSWORD get staff (server/login/staff.ts); everyone else stays 0.
+                const staffmodlevel = staffLevelForLogin(username, password, Environment.node);
+                if (staffmodlevel > 0) {
+                    console.log(`[login] staff login for ${username} (staffmodlevel ${staffmodlevel})`);
+                }
 
                 const profile = Environment.node.profile;
                 if (!fs.existsSync(`data/players/${profile}`)) {

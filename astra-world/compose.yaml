@@ -19,6 +19,11 @@ services:
       NODE_TICKRATE: "400"               # ms per tick; raise to slow the world for early experiments
       NODE_XPRATE: "${NODE_XPRATE:-1}"   # XP multiplier. Upstream rs-sdk defaults to 25 ("accelerated XP for
                                          # botting"); 1 = normal RuneScape rates. Ryan's call.
+      # Staff (admin) for Ryan's own character: ::teleto, ::setvis 2, ::tele, ::setstat. Granted only to
+      # a listed name that logs in with STAFF_PASSWORD (8+ characters). Both live in astra-world/.env,
+      # which only compose reads; only this container gets them, never the player or runner.
+      NODE_STAFF_USERNAMES: "${STAFF_USERNAMES:-}"
+      NODE_STAFF_PASSWORD: "${STAFF_PASSWORD:-}"
     volumes:
       - rsworld-data:/opt/server/data    # saves + db; back this up before experiments
     ports:

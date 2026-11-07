@@ -48,6 +48,28 @@ What the runner writes into her folder: `status.json` (what it's doing now), `in
 
 With `PLAYER_CLIENT=headless-browser` in `astra-world/.env` (then `docker compose -f astra-world/compose.yaml up -d`), Astra's client runs as a headless Chromium page inside the player container instead of the lite client. She asks for a picture by writing `requests/screenshot-<id>.json`; the runner saves `world/screenshots/<id>.png` and tells her in `inbox/`. With the default `lite` client, requests come back `screenshot_failed` (lite can't draw). The image includes Chromium unless built with `PLAYER_CAMERA=false` in `.env`.
 
+## Admin for your own character (follow Astra invisibly)
+
+Add two lines to `astra-world/.env`, then `docker compose -f astra-world/compose.yaml up -d` (the world image must be built from this branch):
+
+```
+STAFF_USERNAMES=Rfinal3
+STAFF_PASSWORD=<a password of 8+ characters>
+```
+
+Log in as `Rfinal3` **with that password** (there's no login server, so the password you type is whatever you choose; use this one from now on). Then type in the game's chat box:
+
+| Command | What it does |
+|---|---|
+| `::teleto astra` | jump to Astra, wherever she is |
+| `::setvis 2` | fully invisible: Astra's game state no longer lists you, and you don't block her path. `::setvis 0` to be seen again. Resets when you log out. |
+| `::tele 0,50,50,22,18` | jump to a coordinate (level, map square x, z, tile x, z) |
+| `::setstat <skill> <level>` | set one of your skills |
+
+Only names in `STAFF_USERNAMES` that log in with `STAFF_PASSWORD` get staff level 3; Astra and everyone else stay at 0, and the name alone is never enough (anything that can reach the world, like the player container, could log in under any name). Only the `world` container gets these two settings. Code: `server/engine/src/server/login/staff.ts`.
+
+Tested 2026-11-07 (Claude, Linux container): a wrong password gives no staff and `::teleto` does nothing; the staff password lands on Astra's tile with `::teleto astra`; after `::setvis 2` her `/observe` lists no players while standing on her tile (before: `Rfinal3@0`). Not tested: whether aggressive monsters ignore you while invisible, and right-click Follow while invisible.
+
 ## Your controls
 
 | What | Where |
