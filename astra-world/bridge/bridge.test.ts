@@ -151,3 +151,13 @@ test('/screenshot: a client error or timeout is 503 and sends no action', async 
         expect(f.walks).toHaveLength(0);
     } finally { await f.close(); }
 });
+
+test('/screenshot: an oversized picture is 413 too_large', async () => {
+    const big = 'A'.repeat(8 * 1024 * 1024 + 4);
+    const f = fixture(false, { screenshot: async () => `data:image/png;base64,${big}` });
+    try {
+        const r = await f.get('/screenshot');
+        expect(r.status).toBe(413);
+        expect(await r.json()).toMatchObject({ error: 'too_large' });
+    } finally { await f.close(); }
+});

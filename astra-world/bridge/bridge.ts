@@ -34,6 +34,7 @@ const MAX_DEADLINE_MS = 300_000;
 const ACTION_ID = /^[A-Za-z0-9._:-]{1,64}$/;
 const SCREENSHOT_TIMEOUT_MS = 10_000;
 const MIN_SCREENSHOT_B64 = 100;   // a real canvas PNG is far larger; `data:,` or a stub is not a picture
+const MAX_SCREENSHOT_B64 = 8 * 1024 * 1024;   // ~6 MB PNG; a 765x503 canvas is ~0.3 MB (measured 2026-11-07)
 
 type InFlight = { actionId: string; verb: string; controller: AbortController; startedMs: number; done: Promise<Awaited<ReturnType<typeof executeAction>>> };
 
@@ -121,6 +122,9 @@ await runScript(async ({ bot, sdk }) => {
         if (!m || m[1]!.length < MIN_SCREENSHOT_B64) {
             return json(422, { error: 'no_picture', message: 'the game client returned no picture (the headless '
                 + 'lite client cannot draw; run the player with PLAYER_CLIENT=headless-browser)' });
+        }
+        if (m[1]!.length > MAX_SCREENSHOT_B64) {
+            return json(413, { error: 'too_large', message: `picture is ${m[1]!.length} base64 chars (max ${MAX_SCREENSHOT_B64})` });
         }
         return json(200, { ...stamp(sdk.getState()), png_base64: m[1] });
     }
