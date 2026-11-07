@@ -4,6 +4,8 @@
 # Env:
 #   BOT_USERNAME   the character (default Astra)
 #   PLAYER_CLIENT  lite (default): headless client runs here
+#                  headless-browser: the camera mode; Astra's client is a headless Chromium
+#                           page here (bridge/camera.ts), so GET /screenshot has a real picture
 #                  browser: Ryan attaches the character in his browser (watch mode A);
 #                           the bridge waits for that client
 #   WORLD_HOST     the world container's name on the game network (default world)
@@ -64,6 +66,14 @@ CLIENT_PID=0
 if [ "$PLAYER_CLIENT" = "lite" ]; then
     echo "[player] starting headless client for ${BOT_USERNAME}"
     ( cd /opt/rs/server/webclient && set -a && . "$ENV_DIR/bot.env" && set +a && exec bun src/lite/runner.ts "$BOT_USERNAME" ) &
+    CLIENT_PID=$!
+elif [ "$PLAYER_CLIENT" = "headless-browser" ]; then
+    if [ ! -x "${CHROMIUM_PATH:-/usr/bin/chromium}" ]; then
+        echo "[player] PLAYER_CLIENT=headless-browser needs Chromium in the image; rebuild with PLAYER_CAMERA=true" >&2
+        exit 1
+    fi
+    echo "[player] starting the camera client (headless Chromium) for ${BOT_USERNAME}"
+    ( cd /opt/rs && exec bun astra-world/bridge/camera.ts "$BOT_USERNAME" ) &
     CLIENT_PID=$!
 else
     echo "[player] PLAYER_CLIENT=browser: open the bot client for ${BOT_USERNAME} in your browser"

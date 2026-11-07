@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { tryParseBoolean, tryParseInt, tryParseString } from '#/util/TryParse.js';
+import { parseStaffUsernames } from '#/server/login/staff.js';
 
 export interface WorldConfig {
     easyStartup: boolean;
@@ -37,6 +38,9 @@ export interface WorldConfig {
         maxMessageLength: number; // max length of a public/private chat message
         objRevealTicks: number; // ticks before a player-dropped obj becomes visible to everyone
         objDespawnScale: number; // percent applied to ground-item despawn timers (100 = vanilla)
+        // astra-world: staff accounts on a private world without a login server (see server/login/staff.ts)
+        staffUsernames: string[];
+        staffPassword: string;
     };
     login: {
         enabled: boolean;
@@ -113,6 +117,8 @@ export function createDefaultWorldConfig(): WorldConfig {
             rateLimitDeviceLogin: 5,
             maxMessageLength: 400, // rs-sdk: raised from the RS-classic 80 for bot-to-bot chat. Single source of truth for server validation + client truncation + SDK chunking. Hard ceiling is ~509 chars: the player-info chat block and MESSAGE_PUBLIC frames carry a 1-byte length over WordPack's ~2-chars-per-byte packing.
             objRevealTicks: 100, // rs-sdk: matches Obj.REVEAL default
+            staffUsernames: [],
+            staffPassword: '',
             objDespawnScale: 100 // rs-sdk: 100% = unchanged despawn timers
         },
         login: {
@@ -256,6 +262,8 @@ export function migrateFromLegacyEnv(defaults: WorldConfig, env: Record<string, 
     config.node.maxMessageLength = tryParseInt(env.NODE_MAX_MESSAGE_LENGTH, config.node.maxMessageLength);
     config.node.objRevealTicks = tryParseInt(env.NODE_OBJ_REVEAL_TICKS, config.node.objRevealTicks);
     config.node.objDespawnScale = tryParseInt(env.NODE_OBJ_DESPAWN_SCALE, config.node.objDespawnScale);
+    if (env.NODE_STAFF_USERNAMES !== undefined) config.node.staffUsernames = parseStaffUsernames(env.NODE_STAFF_USERNAMES);
+    config.node.staffPassword = tryParseString(env.NODE_STAFF_PASSWORD, config.node.staffPassword);
 
     config.login.enabled = tryParseBoolean(env.LOGIN_SERVER, config.login.enabled);
     config.login.host = tryParseString(env.LOGIN_HOST, config.login.host);

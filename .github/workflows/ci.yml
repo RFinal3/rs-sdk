@@ -33,6 +33,7 @@ jobs:
         run: |
           bun test astra-world/bridge
           PYTHONPATH=astra-world/kit python3 -m unittest discover -s astra-world/kit/tests
+          PYTHONPATH=astra-world/kit:astra-world/runner python3 -m unittest discover -s astra-world/runner/runner_tests -t astra-world/runner
 
       - name: Build game content for compiled-script regression tests
         working-directory: server/engine

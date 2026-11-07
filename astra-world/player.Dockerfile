@@ -13,9 +13,19 @@ FROM ${BUN_IMAGE}
 RUN apt-get update && apt-get install -y --no-install-recommends python3 ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
+# Camera mode (PLAYER_CLIENT=headless-browser) needs Chromium. On by default so switching modes
+# is an .env change plus a restart; build with --build-arg PLAYER_CAMERA=false to leave it out.
+ARG PLAYER_CAMERA=true
+RUN if [ "$PLAYER_CAMERA" = "true" ]; then \
+        apt-get update && apt-get install -y --no-install-recommends chromium fonts-liberation \
+        && rm -rf /var/lib/apt/lists/*; \
+    fi
+
 WORKDIR /opt/rs
 
-# Dependencies first (cached unless lockfiles change).
+# Dependencies first (cached unless lockfiles change). Puppeteer drives the system Chromium;
+# it must not download its own browser.
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 COPY package.json bun.lock bunfig.toml tsconfig.json ./
 RUN bun install --frozen-lockfile
 COPY server/webclient/package.json server/webclient/bun.lock server/webclient/
@@ -27,11 +37,12 @@ COPY server/vendor server/vendor
 COPY server/webclient server/webclient
 COPY astra-world/bridge astra-world/bridge
 COPY astra-world/kit astra-world/kit
+COPY astra-world/runner/runner.py astra-world/runner/runner.py
 COPY astra-world/config astra-world/config
 COPY astra-world/fixtures astra-world/fixtures
 COPY --chmod=755 astra-world/player-entry.sh /usr/local/bin/player-entry.sh
 
-ENV PYTHONPATH=/opt/rs/astra-world/kit \
+ENV PYTHONPATH=/opt/rs/astra-world/kit:/opt/rs/astra-world/runner \
     TELEMETRY=false \
     BRIDGE_PORT=7790
 

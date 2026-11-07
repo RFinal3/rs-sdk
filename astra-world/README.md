@@ -29,6 +29,47 @@ The first build takes a few minutes. Then:
 - **Logs:** `docker compose -f astra-world/compose.yaml logs -f player`
 - **Stop the world:** `docker compose -f astra-world/compose.yaml down` (saves stay in the volume).
 
+## Astra plays by herself (the runner)
+
+The `runner` service starts with the stack and keeps Astra playing while the world is up. Design: vault `agents/rs-sdk-jev/docs/runner/RUNNER-DESIGN-2026-11-07.md`.
+
+1. Point it at Astra's folder: `ASTRA_HARNESS_DIR=C:/path/to/astra_projects/rs-sdk-play/harness` in `astra-world/.env`.
+2. `docker compose -f astra-world/compose.yaml up -d --build`.
+3. Message Astra. She queues cards (`cards/queue/*.json`, her goal files) and reads what happened in `inbox/`. The runner plays one card at a time, as a fresh run of her `astra_loop.py`.
+
+What the runner writes into her folder: `status.json` (what it's doing now), `inbox/` (one JSON file per event), `world/` (the game as the bridge sees it, every 5 s: `observe.json`, `summary.txt`, `health.json`, `verbs.json`), `world/screenshots/` (on request), and it moves cards between `cards/queue|active|done|failed`. It never acts in the game itself and never sees the character's password.
+
+- **Stop:** create `astra-world/owner/STOP` (an empty file, no extension). No new card starts. A card in play is stopped within ~15 s (SIGTERM, then one `/cancel`, then kill), and plays again once STOP is removed. Saves are kept.
+- **"needs_ryan":** if the bridge can't confirm a stop, the runner starts nothing more. Look at the game, then `docker compose -f astra-world/compose.yaml restart player`.
+- **Watch it:** `docker compose -f astra-world/compose.yaml logs -f runner`, or open `status.json` in her folder.
+- **Don't** run `astra_loop.py` by hand with `exec player` while the runner is up: two sessions would fight over the character. `live_check.py` is fine between cards.
+
+### Screenshots (camera mode)
+
+With `PLAYER_CLIENT=headless-browser` in `astra-world/.env` (then `docker compose -f astra-world/compose.yaml up -d`), Astra's client runs as a headless Chromium page inside the player container instead of the lite client. She asks for a picture by writing `requests/screenshot-<id>.json`; the runner saves `world/screenshots/<id>.png` and tells her in `inbox/`. With the default `lite` client, requests come back `screenshot_failed` (lite can't draw). The image includes Chromium unless built with `PLAYER_CAMERA=false` in `.env`.
+
+## Admin for your own character (follow Astra invisibly)
+
+Add two lines to `astra-world/.env`, then `docker compose -f astra-world/compose.yaml up -d` (the world image must be built from this branch):
+
+```
+STAFF_USERNAMES=Rfinal3
+STAFF_PASSWORD=<a password of 8+ characters>
+```
+
+Log in as `Rfinal3` **with that password** (there's no login server, so the password you type is whatever you choose; use this one from now on). Then type in the game's chat box:
+
+| Command | What it does |
+|---|---|
+| `::teleto astra` | jump to Astra, wherever she is |
+| `::setvis 2` | fully invisible: Astra's game state no longer lists you, and you don't block her path. `::setvis 0` to be seen again. Resets when you log out. |
+| `::tele 0,50,50,22,18` | jump to a coordinate (level, map square x, z, tile x, z) |
+| `::setstat <skill> <level>` | set one of your skills |
+
+Only names in `STAFF_USERNAMES` that log in with `STAFF_PASSWORD` get staff level 3; Astra and everyone else stay at 0, and the name alone is never enough (anything that can reach the world, like the player container, could log in under any name). Only the `world` container gets these two settings. Code: `server/engine/src/server/login/staff.ts`.
+
+Tested 2026-11-07 (Claude, Linux container): a wrong password gives no staff and `::teleto` does nothing; the staff password lands on Astra's tile with `::teleto astra`; after `::setvis 2` her `/observe` lists no players while standing on her tile (before: `Rfinal3@0`). Not tested: whether aggressive monsters ignore you while invisible, and right-click Follow while invisible.
+
 ## Your controls
 
 | What | Where |
@@ -78,6 +119,25 @@ The earlier live check only verified that cancellation stopped short of the fina
 
 Offline validation of the follow-up uses Bun 1.4.4: bridge cancellation/deadline tests, real lite-client packet encoding, SDK cancellation/walk regressions, and 34 Python kit tests. Root and bridge TypeScript checks pass. Container, live-world, Windows, and browser-attached checks have not been rerun for these fixes. CI now explicitly runs the bridge and Python kit suites.
 
+## Runner and camera: what's tested (2026-11-07, Claude, Linux cloud container)
+
+Images built from this branch (with the sandbox's proxy CA added in a local-only copy of the Dockerfiles; the committed Dockerfiles are unchanged apart from the runner and camera lines). Astra's harness was her GitHub version, `rs-sdk-play` `d986ad6` (her newer `a801a29` is only on Ryan's PC).
+
+| Check | Result |
+|---|---|
+| `live_check.py` on the new player image | 12/12 |
+| Runner plays a card with her real harness to `goal_reached: Woodcutting 2 >= 2`; card filed in `done/`, events in `inbox/` | pass, about 50 s |
+| Fresh character still in the tutorial: both cards end `no_options` → `card_needs_astra` | pass (her v1 harness doesn't skip the tutorial) |
+| STOP mid-card: session stopped in ~2 s, card stays in `active/`, the in-flight action cancelled (bridge busy → idle) | pass, after a fix found in this test |
+| STOP removed: the same card plays again | pass |
+| `docker compose down` / `up` mid-card: card stays in `active/`, `card_interrupted` at restart, played again first | pass |
+| Mirror: `observe.json`, `summary.txt`, `health.json`, `verbs.json` refresh every 5 s | pass |
+| Camera mode (`PLAYER_CLIENT=headless-browser`): Chromium client logs in; a screenshot request gives a 765×503 PNG of her view | pass |
+| Character password absent from every file in her folder; runner has no secrets volume | pass |
+| Camera cost | player ~730 MB RAM, ~45% of one core at 5 fps; image 1.75 GB |
+
+Offline: 27 runner tests, 34 kit tests, 25 bridge tests (3 new for `/screenshot`), root type check. **Not tested:** Windows / Docker Desktop (including `network_mode: service:player` and writes into Ryan's folder from the container's `bun` user), Astra's `a801a29` harness, Jev. A lite-client screenshot request fails, as it should; with the bridge's 10 s wait it reports a timeout rather than `no_picture`.
+
 ## Files
 
 | Path | What |
@@ -85,6 +145,8 @@ Offline validation of the follow-up uses Bun 1.4.4: bridge cancellation/deadline
 | `compose.yaml`, `player.Dockerfile`, `player-entry.sh` | the stack |
 | `bridge/bridge.ts`, `bridge/verbs.ts` | the bridge and its fixed verb table (28 verbs) |
 | `bridge/forward.ts` | loopback forwarder (the SDK only speaks plain http/ws to `localhost`) |
+| `bridge/camera.ts` | camera mode: Astra's client in headless Chromium, so `GET /screenshot` has a picture |
+| `runner/runner.py` | the runner (cards, STOP, mirror, inbox, screenshots); tests in `runner/runner_tests/` |
 | `kit/rsworld/` | Python: `bridge_client`, `contracts` (limits/goal/progress), `decider` (mock deciders, answer validation) |
 | `config/` | example limits and goal |
 | `fixtures/` | real states and act responses captured 2026-11-04, for offline tests |
